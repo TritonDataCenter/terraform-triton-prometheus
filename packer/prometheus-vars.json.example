@@ -1,0 +1,4 @@
+{
+  "prometheus_cmon_cert_file_path": "/Users/username/.sdc/docker/acmeinc-dev/cert.pem",
+  "prometheus_cmon_key_file_path": "/Users/username/.sdc/docker/acmeinc-dev/key.pem"
+}

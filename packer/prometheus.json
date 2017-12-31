@@ -1,0 +1,63 @@
+{
+  "variables": {
+    "triton_account": "{{ env `SDC_ACCOUNT` }}",
+    "triton_key_id": "{{ env `SDC_KEY_ID` }}",
+    "triton_url": "{{ env `SDC_URL` }}",
+    "timestamp": "{{ isotime \"2006-01-02T030405Z\" }}",
+    "version": "2.0.0",
+    "cmon_cert_file_path": "",
+    "cmon_key_file_path": ""
+  },
+  "builders": [
+    {
+      "type": "triton",
+      "triton_account": "{{ user `triton_account` }}",
+      "triton_key_id": "{{ user `triton_key_id` }}",
+      "triton_url": "{{ user `triton_url` }}",
+      "source_machine_name": "packer-builder-prometheus-{{uuid}}",
+      "source_machine_image_filter": {
+        "name": "ubuntu-16.04",
+        "type": "lx-dataset",
+        "most_recent": true
+      },
+      "source_machine_package": "g4-general-4G",
+      "source_machine_metadata": {
+        "prometheus_version": "{{ user `version` }}"
+      },
+      "ssh_username": "root",
+      "image_name": "prometheus",
+      "image_version": "{{ user `version` }}-{{ user `timestamp` }}",
+      "image_description": "Built by Packer at {{ user `timestamp` }}}."
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "mkdir -p /tmp/prometheus_installer/"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "scripts/install_prometheus.sh",
+      "destination": "/tmp/prometheus_installer/install_prometheus.sh"
+    },
+    {
+      "type": "file",
+      "source": "{{ user `cmon_cert_file_path` }}",
+      "destination": "/tmp/prometheus_installer/cert.pem"
+    },
+    {
+      "type": "file",
+      "source": "{{ user `cmon_key_file_path` }}",
+      "destination": "/tmp/prometheus_installer/key.pem"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "chmod 0755 /tmp/prometheus_installer/install_prometheus.sh",
+        "/tmp/prometheus_installer/install_prometheus.sh"
+      ]
+    }
+  ]
+}

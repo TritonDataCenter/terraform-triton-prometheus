@@ -7,6 +7,12 @@ data "triton_image" "ubuntu" {
   most_recent = true
 }
 
+data "triton_image" "prometheus" {
+  name        = "prometheus"
+  type        = "lx-dataset"
+  most_recent = true
+}
+
 data "triton_network" "public" {
   name = "Joyent-SDC-Public"
 }
@@ -21,7 +27,7 @@ data "triton_network" "private" {
 module "bastion" {
   source = "github.com/joyent/terraform-triton-bastion"
 
-  name    = "prometheus"
+  name    = "prometheus-with-images"
   image   = "${data.triton_image.ubuntu.id}"
   package = "g4-general-4G"
 
@@ -35,8 +41,8 @@ module "bastion" {
 module "prometheus" {
   source = "../../"
 
-  name    = "prometheus"
-  image   = "${data.triton_image.ubuntu.id}"
+  name    = "prometheus-with-images"
+  image   = "${data.triton_image.prometheus.id}" # note: using the PROMETHEUS image here
   package = "g4-general-4G"
 
   # Public and Private
@@ -45,7 +51,7 @@ module "prometheus" {
     "${data.triton_network.private.id}",
   ]
 
-  provision        = "true"
+  provision        = "false"                   # note: we are NOT provisioning as we ARE using pre-built images.
   private_key_path = "${var.private_key_path}"
 
   cmon_cert_file_path = "${var.prometheus_cmon_cert_file_path}"
