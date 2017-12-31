@@ -61,10 +61,10 @@ module "prometheus" {
 ## Examples
 - [basic-with-images](examples/basic-with-images) - Deploys a Prometheus server and relevant resources. Prometheus 
 server will be deployed from _pre-existing_ images, ideally built by Packer.
-  - :information_source: _Note: This is the best practice method for deploying this module._
+  - _Note: This is the best practice method for deploying this module._
 - [basic-with-provisioning](examples/basic-with-provisioning) - Deploys a Prometheus server and relevant resources. 
 Prometheus server will be _provisioned_ by Terraform.
-  - :warning: _Note: This method with Terraform provisioning is only recommended for prototyping and light testing._
+  - _Note: This method with Terraform provisioning is only recommended for prototyping and light testing._
 
 ## Resources created
 
