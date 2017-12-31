@@ -1,4 +1,4 @@
-# Triton TODO Terraform Module
+# Triton Prometheus Terraform Module
 
 A Terraform module to create a [Prometheus server](https://prometheus.io/) for 
 [Joyent's Triton Compute service](https://www.joyent.com/triton/compute), integrated with Container Monitor service 
