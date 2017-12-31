@@ -3,7 +3,9 @@
 Creates one Prometheus server, integrated with Triton's Container Monitor service. Uses Packer to build the 
 Prometheus machines and then Terraform to create and manage the infrastructure resources.
 
-Note: This example uses the [`triton_image`](https://www.terraform.io/docs/providers/triton/d/triton_image.html)
+> :information_source: _Note: This is the best practice method for deploying this module._
+
+> :warning: Note: This example uses the [`triton_image`](https://www.terraform.io/docs/providers/triton/d/triton_image.html)
 data source to find the image built by Packer. This depends on the `image_name` property set in the Packer build.
 If you change this image name, you must also update the data source that finds this image.
 
