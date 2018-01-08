@@ -47,7 +47,6 @@ module "prometheus" {
 
   # Public and Private
   networks = [
-    "${data.triton_network.public.id}",
     "${data.triton_network.private.id}",
   ]
 
