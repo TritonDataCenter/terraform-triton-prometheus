@@ -6,7 +6,20 @@ terraform {
 }
 
 provider "triton" {
-  version = ">= 0.4.0"
+  version = ">= 0.4.1"
+}
+
+#
+# Data sources
+#
+data "triton_datacenter" "current" {}
+
+#
+# Locals
+#
+locals {
+  cmon_dns_suffix = "cmon.${data.triton_datacenter.current.name}.${var.cns_fqdn_base}"
+  cmon_endpoint   = "cmon.${data.triton_datacenter.current.name}.${var.cns_fqdn_base}"
 }
 
 #
@@ -31,6 +44,8 @@ resource "triton_machine" "prometheus" {
 
   metadata {
     prometheus_version = "${var.version}"
+    cmon_dns_suffix    = "${var.cmon_dns_suffix != "" ? var.cmon_dns_suffix : local.cmon_dns_suffix}"
+    cmon_endpoint      = "${var.cmon_endpoint != "" ? var.cmon_endpoint : local.cmon_endpoint}"
   }
 }
 

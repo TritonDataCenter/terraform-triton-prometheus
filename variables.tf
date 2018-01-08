@@ -55,6 +55,24 @@ variable "cns_service_name" {
   default     = "prometheus"
 }
 
+variable "cmon_dns_suffix" {
+  description = "The full DNS suffix to use for configuring Prometheus. If omitted, will use default pattern for Joyent Public Cloud."
+  type        = "string"
+  default     = ""
+}
+
+variable "cmon_endpoint" {
+  description = "The full address to use for configuring Prometheus. If omitted, will use default pattern for Joyent Public Cloud."
+  type        = "string"
+  default     = ""
+}
+
+variable "cns_fqdn_base" {
+  description = "The fully qualified domain name base for the CNS address - e.g. 'triton.zone' for Joyent Public Cloud."
+  type        = "string"
+  default     = "triton.zone"
+}
+
 variable "cmon_cert_file_path" {
   description = <<EOF
 The path to the TLS certificate to use for authentication to the CMON endpoint.

@@ -38,25 +38,32 @@ function install_dependencies() {
 #
 # Parameters:
 #     $1: the triton account name
-#     $2: the triton region
-#     $3: the prometheus version
+#     $2: the prometheus version
+#     $3: the cmon dns suffix
+#     $4: the cmon endpoint
 function check_arguments() {
   local -r triton_account=${1}
-  local -r triton_region=${2}
-  local -r prometheus_version=${3}
+  local -r prometheus_version=${2}
+  local -r cmon_dns_suffix=${3}
+  local -r cmon_endpoint=${4}
 
   if [[ -z "${triton_account}" ]]; then
     log "Triton account name not provided. Exiting..."
     exit 1
   fi
 
-  if [[ -z "${triton_region}" ]]; then
-    log "Triton region not provided. Exiting..."
+  if [[ -z "${prometheus_version}" ]]; then
+    log "Prometheus version not provided. Exiting..."
     exit 1
   fi
 
-  if [[ -z "${prometheus_version}" ]]; then
-    log "Prometheus version not provided. Exiting..."
+  if [[ -z "${cmon_dns_suffix}" ]]; then
+    log "CMON DNS Suffix not provided. Exiting..."
+    exit 1
+  fi
+
+  if [[ -z "${cmon_endpoint}" ]]; then
+    log "CMON Endpoint not provided. Exiting..."
     exit 1
   fi
 }
@@ -65,12 +72,14 @@ function check_arguments() {
 #
 # Parameters:
 #     $1: the triton account name
-#     $2: the triton region
-#     $3: the prometheus version
+#     $2: the prometheus version
+#     $3: the cmon dns suffix
+#     $4: the cmon endpoint
 function install_prometheus() {
   local -r triton_account=${1}
-  local -r triton_region=${2}
-  local -r prometheus_version=${3}
+  local -r prometheus_version=${2}
+  local -r cmon_dns_suffix=${3}
+  local -r cmon_endpoint=${4}
 
   local -r path_file="prometheus-${prometheus_version}.linux-amd64.tar.gz"
   local -r path_install="/usr/local/prometheus-${prometheus_version}.linux-amd64"
@@ -94,7 +103,7 @@ global:
 # all defaults
 
 scrape_configs:
-  - job_name: ${triton_account}_${triton_region}
+  - job_name: triton_cmon
     scrape_interval: 15s
     scrape_timeout: 5s
     scheme: https
@@ -104,8 +113,8 @@ scrape_configs:
       insecure_skip_verify: true
     triton_sd_configs:
       - account: ${triton_account}
-        dns_suffix: cmon.${triton_region}.triton.zone
-        endpoint: cmon.${triton_region}.triton.zone
+        dns_suffix: ${cmon_dns_suffix}
+        endpoint: ${cmon_endpoint}
         version: 1
         tls_config:
           cert_file: /etc/prometheus/triton_certs/cert.pem
@@ -156,15 +165,16 @@ function main() {
   check_prerequisites
 
   local -r arg_triton_account_uuid=$(/native/usr/sbin/mdata-get 'sdc:owner_uuid') # see https://eng.joyent.com/mdata/datadict.html
-  local -r arg_triton_region=$(/native/usr/sbin/mdata-get 'sdc:datacenter_name') # see https://eng.joyent.com/mdata/datadict.html
   local -r arg_prometheus_version=$(/native/usr/sbin/mdata-get 'prometheus_version')
+  local -r arg_cmon_dns_suffix=$(/native/usr/sbin/mdata-get 'cmon_dns_suffix')
+  local -r arg_cmon_endpoint=$(/native/usr/sbin/mdata-get 'cmon_endpoint')
 
   check_arguments \
-    ${arg_triton_account_uuid} ${arg_triton_region} ${arg_prometheus_version}
+    ${arg_triton_account_uuid} ${arg_prometheus_version} ${arg_cmon_dns_suffix} ${arg_cmon_endpoint}
 
   install_dependencies
   install_prometheus \
-    ${arg_triton_account_uuid} ${arg_triton_region} ${arg_prometheus_version}
+    ${arg_triton_account_uuid} ${arg_prometheus_version} ${arg_cmon_dns_suffix} ${arg_cmon_endpoint}
 
   log "Done."
 }

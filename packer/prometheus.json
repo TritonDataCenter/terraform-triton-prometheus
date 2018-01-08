@@ -5,6 +5,8 @@
     "triton_url": "{{ env `SDC_URL` }}",
     "timestamp": "{{ isotime \"2006-01-02T030405Z\" }}",
     "version": "2.0.0",
+    "cmon_dns_suffix": "",
+    "cmon_endpoint": "",
     "cmon_cert_file_path": "",
     "cmon_key_file_path": ""
   },
@@ -22,7 +24,9 @@
       },
       "source_machine_package": "g4-general-4G",
       "source_machine_metadata": {
-        "prometheus_version": "{{ user `version` }}"
+        "prometheus_version": "{{ user `version` }}",
+        "cmon_dns_suffix": "{{ user `cmon_dns_suffix` }}",
+        "cmon_endpoint": "{{ user `cmon_endpoint` }}"
       },
       "ssh_username": "root",
       "image_name": "prometheus",
