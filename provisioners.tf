@@ -39,7 +39,7 @@ resource "null_resource" "prometheus_install" {
   provisioner "remote-exec" {
     inline = [
       "chmod 0755 /tmp/prometheus_installer/install_prometheus.sh",
-      "/tmp/prometheus_installer/install_prometheus.sh",
+      "sudo /tmp/prometheus_installer/install_prometheus.sh",
     ]
   }
 

@@ -164,10 +164,10 @@ function log() {
 function main() {
   check_prerequisites
 
-  local -r arg_triton_account_uuid=$(/native/usr/sbin/mdata-get 'sdc:owner_uuid') # see https://eng.joyent.com/mdata/datadict.html
-  local -r arg_prometheus_version=$(/native/usr/sbin/mdata-get 'prometheus_version')
-  local -r arg_cmon_dns_suffix=$(/native/usr/sbin/mdata-get 'cmon_dns_suffix')
-  local -r arg_cmon_endpoint=$(/native/usr/sbin/mdata-get 'cmon_endpoint')
+  local -r arg_triton_account_uuid=$(mdata-get 'sdc:owner_uuid') # see https://eng.joyent.com/mdata/datadict.html
+  local -r arg_prometheus_version=$(mdata-get 'prometheus_version')
+  local -r arg_cmon_dns_suffix=$(mdata-get 'cmon_dns_suffix')
+  local -r arg_cmon_endpoint=$(mdata-get 'cmon_endpoint')
 
   check_arguments \
     ${arg_triton_account_uuid} ${arg_prometheus_version} ${arg_cmon_dns_suffix} ${arg_cmon_endpoint}
