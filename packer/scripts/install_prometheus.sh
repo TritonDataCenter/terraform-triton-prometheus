@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Installs Prometheus and Grafana, configured with Triton Container Monitor.
+# Installs Prometheus, configured with Triton Container Monitor.
 #
 # Note: Generally follows guidelines at https://web.archive.org/web/20170701145736/https://google.github.io/styleguide/shell.xml.
 #
