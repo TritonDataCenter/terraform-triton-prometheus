@@ -14,22 +14,22 @@ If you change this image name, you must also update the data source that finds t
 Build the necessary images using [Packer](https://www.packer.io/):
 
 1. Change directories to the `packer` directory: 
-  ```
-  cd packer
-  ```
+    ```
+    cd packer
+    ```
 1. Copy the example variables file `prometheus-vars.json.example` to `prometheus-vars.json` and modify its contents to 
 specify the path to the TLS certificates to use to authenticate to the CMON endpoint. The sdc-docker setup script is the 
 easiest way to obtain these files - https://raw.githubusercontent.com/joyent/sdc-docker/master/tools/sdc-docker-setup.sh.
 1. Build the Prometheus image using Packer:
-  ```
-  packer build -var-file prometheus-vars.json prometheus.json
-  ```
+    ```
+    packer build -var-file prometheus-vars.json prometheus.json
+    ```
 1. Initialize and create the environment using Terraform:
-  ```
-  terraform init
-  terraform plan
-  terraform apply
-  ```
+    ```
+    terraform init
+    terraform plan
+    terraform apply
+    ```
 
 ## Cleanup
 
