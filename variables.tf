@@ -67,10 +67,16 @@ variable "cmon_endpoint" {
   default     = ""
 }
 
-variable "cns_fqdn_base" {
+variable "cmon_fqdn_base" {
   description = "The fully qualified domain name base for the CNS address - e.g. 'triton.zone' for Joyent Public Cloud."
   type        = "string"
   default     = "triton.zone"
+}
+
+variable "cns_fqdn_base" {
+  description = "The fully qualified domain name base for the CNS address - e.g. 'cns.joyent.com' for Joyent Public Cloud."
+  type        = "string"
+  default     = "cns.joyent.com"
 }
 
 variable "cmon_cert_file_path" {

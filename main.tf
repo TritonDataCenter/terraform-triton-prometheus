@@ -14,12 +14,15 @@ provider "triton" {
 #
 data "triton_datacenter" "current" {}
 
+data "triton_account" "current" {}
+
 #
 # Locals
 #
 locals {
-  cmon_dns_suffix = "cmon.${data.triton_datacenter.current.name}.${var.cns_fqdn_base}"
-  cmon_endpoint   = "cmon.${data.triton_datacenter.current.name}.${var.cns_fqdn_base}"
+  cmon_dns_suffix    = "cmon.${data.triton_datacenter.current.name}.${var.cmon_fqdn_base}"
+  cmon_endpoint      = "cmon.${data.triton_datacenter.current.name}.${var.cmon_fqdn_base}"
+  prometheus_address = "${var.role_tag}.svc.${data.triton_account.current.id}.${data.triton_datacenter.current.name}.${var.cns_fqdn_base}"
 }
 
 #

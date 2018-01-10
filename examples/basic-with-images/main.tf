@@ -27,8 +27,8 @@ data "triton_network" "private" {
 module "bastion" {
   source = "github.com/joyent/terraform-triton-bastion"
 
-  name    = "prometheus-with-images"
-  image   = "${data.triton_image.ubuntu.id}"
+  name    = "prometheus-basic-with-images"
+  image   = "${data.triton_image.ubuntu.id}" # note: using the UBUNTU image here
   package = "g4-general-4G"
 
   # Public and Private
@@ -41,7 +41,7 @@ module "bastion" {
 module "prometheus" {
   source = "../../"
 
-  name    = "prometheus-with-images"
+  name    = "prometheus-basic-with-images"
   image   = "${data.triton_image.prometheus.id}" # note: using the PROMETHEUS image here
   package = "g4-general-4G"
 
