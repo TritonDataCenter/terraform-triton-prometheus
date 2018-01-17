@@ -50,11 +50,11 @@ module "prometheus" {
     "${data.triton_network.private.id}",
   ]
 
-  provision        = "false"                   # note: we are NOT provisioning as we ARE using pre-built images.
+  provision        = "false"                   # note: we are NOT provisioning as we ARE using pre-built images
   private_key_path = "${var.private_key_path}"
 
-  cmon_cert_file_path = "${var.prometheus_cmon_cert_file_path}"
-  cmon_key_file_path  = "${var.prometheus_cmon_key_file_path}"
+  cmon_cert_file_path = "" # note: unused since we're using pre-built images
+  cmon_key_file_path  = "" # note: unused since we're using pre-built images
 
   bastion_host     = "${element(module.bastion.bastion_ip,0)}"
   bastion_user     = "${module.bastion.bastion_user}"
