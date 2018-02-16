@@ -39,7 +39,7 @@ module "prometheus" {
   image   = "${data.triton_image.ubuntu.id}"     # note: using the UBUNTU image here
   package = "g4-general-4G"
 
-  # Public and Private
+  # Private
   networks = [
     "${data.triton_network.private.id}",
   ]
@@ -50,7 +50,7 @@ module "prometheus" {
   cmon_cert_file_path = "${var.prometheus_cmon_cert_file_path}"
   cmon_key_file_path  = "${var.prometheus_cmon_key_file_path}"
 
-  bastion_host     = "${element(module.bastion.bastion_ip,0)}"
-  bastion_user     = "${module.bastion.bastion_user}"
-  bastion_role_tag = "${module.bastion.bastion_role_tag}"
+  bastion_address          = "${module.bastion.bastion_address}"
+  bastion_user             = "${module.bastion.bastion_user}"
+  bastion_cns_service_name = "${module.bastion.bastion_cns_service_name}"
 }
