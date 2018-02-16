@@ -22,7 +22,7 @@ data "triton_network" "private" {
 }
 
 module "bastion" {
-  source = "github.com/joyent/terraform-triton-bastion?ref=f-remove-role-tag"
+  source = "github.com/joyent/terraform-triton-bastion"
 
   name    = "prometheus-basic-with-provisioning"
   image   = "${data.triton_image.ubuntu.id}"
