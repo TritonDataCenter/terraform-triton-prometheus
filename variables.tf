@@ -32,12 +32,6 @@ variable "user" {
   default     = "root"
 }
 
-variable "role_tag" {
-  description = "The 'role' tag for the Prometheus machine(s)."
-  type        = "string"
-  default     = "prometheus"
-}
-
 variable "provision" {
   description = "Boolean 'switch' to indicate if Terraform should do the machine provisioning to install and configure Prometheus."
   type        = "string"
@@ -110,8 +104,8 @@ EOF
   default = ["all vms"]
 }
 
-variable "bastion_host" {
-  description = "The Bastion host to use for provisioning."
+variable "bastion_address" {
+  description = "The Bastion address to use for provisioning."
   type        = "string"
 }
 
@@ -120,7 +114,7 @@ variable "bastion_user" {
   type        = "string"
 }
 
-variable "bastion_role_tag" {
-  description = "The 'role' tag for the Prometheus machine(s) to allow access FROM the Bastion machine(s)."
+variable "bastion_cns_service_name" {
+  description = "The CNS service name for the Prometheus machine(s) to allow access FROM the Bastion machine(s)."
   type        = "string"
 }
