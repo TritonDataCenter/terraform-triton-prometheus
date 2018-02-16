@@ -33,7 +33,7 @@ resource "triton_machine" "prometheus" {
   package = "${var.package}"
   image   = "${var.image}"
 
-  firewall_enabled = false
+  firewall_enabled = true
 
   networks = ["${var.networks}"]
 
