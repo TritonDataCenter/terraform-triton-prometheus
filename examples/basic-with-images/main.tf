@@ -1,4 +1,14 @@
 #
+# Remote State
+#
+terraform {
+  backend "manta" {
+    path       = "terraform-state/prometheus/"
+    objectName = "terraform.tfstate"
+  }
+}
+
+#
 # Data Sources
 #
 data "triton_image" "ubuntu" {

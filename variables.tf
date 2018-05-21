@@ -39,7 +39,7 @@ variable "provision" {
 
 variable "version" {
   description = "The version of Prometheus to install. See https://prometheus.io/download/."
-  default     = "2.0.0"                                                                      # Note: Be sure to change this in the Packer script too.
+  default     = "2.2.1"                                                                      # Note: Be sure to change this in the Packer script too.
   type        = "string"
 }
 
