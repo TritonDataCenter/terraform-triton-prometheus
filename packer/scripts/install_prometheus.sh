@@ -41,6 +41,7 @@ function install_dependencies() {
 #     $2: the prometheus version
 #     $3: the cmon dns suffix
 #     $4: the cmon endpoint
+#     $5: the prometheus checksum
 function check_arguments() {
   local -r triton_account=${1}
   local -r prometheus_version=${2}
@@ -54,6 +55,11 @@ function check_arguments() {
 
   if [[ -z "${prometheus_version}" ]]; then
     log "Prometheus version not provided. Exiting..."
+    exit 1
+  fi
+
+  if [[ -z "${prometheus_checksum}" ]]; then
+    log "Prometheus checksum not provided. Exiting..."
     exit 1
   fi
 
@@ -75,17 +81,22 @@ function check_arguments() {
 #     $2: the prometheus version
 #     $3: the cmon dns suffix
 #     $4: the cmon endpoint
+#     $5: the prometheus checksum
 function install_prometheus() {
   local -r triton_account=${1}
   local -r prometheus_version=${2}
   local -r cmon_dns_suffix=${3}
   local -r cmon_endpoint=${4}
+  local -r prometheus_checksum=${5}
 
   local -r path_file="prometheus-${prometheus_version}.linux-amd64.tar.gz"
   local -r path_install="/usr/local/prometheus-${prometheus_version}.linux-amd64"
 
   log "Downloading prometheus ${prometheus_version}..."
   wget -q https://github.com/prometheus/prometheus/releases/download/v${prometheus_version}/${path_file} -O ${path_file}
+  sha256sum -c <<EOF || (rm ${path_file} && /bin/false)
+${prometheus_checksum}  ${path_file}
+EOF
 
   log "Installing prometheus ${prometheus_version}..."
 
@@ -166,15 +177,16 @@ function main() {
 
   local -r arg_triton_account_uuid=$(mdata-get 'sdc:owner_uuid') # see https://eng.joyent.com/mdata/datadict.html
   local -r arg_prometheus_version=$(mdata-get 'prometheus_version')
+  local -r arg_prometheus_checksum=$(mdata-get 'prometheus_checksum')
   local -r arg_cmon_dns_suffix=$(mdata-get 'cmon_dns_suffix')
   local -r arg_cmon_endpoint=$(mdata-get 'cmon_endpoint')
 
   check_arguments \
-    ${arg_triton_account_uuid} ${arg_prometheus_version} ${arg_cmon_dns_suffix} ${arg_cmon_endpoint}
+    ${arg_triton_account_uuid} ${arg_prometheus_version} ${arg_cmon_dns_suffix} ${arg_cmon_endpoint} ${arg_prometheus_checksum}
 
   install_dependencies
   install_prometheus \
-    ${arg_triton_account_uuid} ${arg_prometheus_version} ${arg_cmon_dns_suffix} ${arg_cmon_endpoint}
+    ${arg_triton_account_uuid} ${arg_prometheus_version} ${arg_cmon_dns_suffix} ${arg_cmon_endpoint} ${arg_prometheus_checksum}
 
   log "Done."
 }
